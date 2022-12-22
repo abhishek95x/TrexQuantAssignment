@@ -148,14 +148,15 @@ void executeTradeMessage(unsigned char arr[]){
 /*Remove broken trade from VWAP*/
 void removeBrokenTrade(unsigned char arr[]){
     uint64_t matchNumber = getOrderReferenceNumber(arr,11);
-    // uint16_t stockLocate = getStockLocate(arr,1);
+    uint16_t stockLocate = getStockLocate(arr,1);
 
     if(mapReferenceToStockOptions.find(matchNumber)!=mapReferenceToStockOptions.end()){
-        
-        // if(mapStockLocateToVWAP.find(stockLocate)!=mapStockToVWAP.end()){
-        //     mapStockLocateToVWAP[stockLocate].first -= price * double(shares);
-        //     mapStockLocateToVWAP[stockLocate].second -= double(shares);
-        // }
+        double price = mapReferenceToStockOptions[matchNumber].second.first;
+        uint32_t shares = mapReferenceToStockOptions[matchNumber].second.second;
+        if(mapStockLocateToVWAP.find(stockLocate)!=mapStockLocateToVWAP.end()){
+            mapStockLocateToVWAP[stockLocate].first -= price * double(shares);
+            mapStockLocateToVWAP[stockLocate].second -= double(shares);
+        }
         mapReferenceToStockOptions.erase(matchNumber);
     }
 }
