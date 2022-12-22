@@ -1,63 +1,58 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <unordered_map>
+#include "Header.h"
 
 using namespace std;
-//clang++ -std=c++11 main.cpp
 
-
-
-int convertToInt(char arr[]){
-    return (int)arr[0]<<8 | (int)arr[1];
-}
-
-int getMessageSize(ifstream &is){
-    char arr[2];
-    is.read(arr,sizeof(arr));
-    return convertToInt(arr);
-}
-
-string getStockName(unsigned char arr[],int i){
-    string stock;
-    int k = i+8;
-    for(;i<k;i++){
-        stock.push_back(arr[i]);
-    }
-    return stock;
-}
 
 int main(){
     clock_t startTime = clock();
     ifstream inputStream("/Users/abhishek/Downloads/01302019.NASDAQ_ITCH50",ios::in | ios::binary);
-    unordered_map <string,vector<float>> stockToVWAP;
+    
     while(inputStream){
         int msgSize = getMessageSize(inputStream);
         unsigned char arr[msgSize];
         inputStream.read((char *)arr,sizeof(arr));
         
+        //Check if We have entered new hour.
+        writeToFile(arr);
+        
+        //Processing the messages based on their msg type.
         switch (arr[0])
         {
         case int('S'):{
-            if(arr[11]==int('C')) return 0; //End of messages
+            if(arr[11]==int('C')){
+                //Directly write to last hour.
+                writeHourlyVWAP();
+                clock_t endTime = clock();
+                double runtime = double(endTime-startTime)/CLOCKS_PER_SEC;
+                cout<<"Total Runtime : "<<fixed<<runtime<<setprecision(5)<<endl;
+                return 0;
+            }
             break;
         }
         case int('R'):{
-            //Stock Directory Message.
-            string stock = getStockName(arr,11);
-            stockToVWAP[stock] = {0,0}; //Numerator,Denominator
+            //Stock Directory Message. Storing all Normal stocks in hashmap. 
+            if(arr[20]==int('N')){
+                addStockToMap(arr);
+            }
             break;
         }
         case int('A'):{
-            //Add Order – No MPID Attribution Message.
+            //Add Order with Buying– No MPID Attribution Message.
+            if(arr[19]==int('B')){
+                addOrder(arr);
+            }   
             break;
         }
         case int('F'):{
             //Add Order – MPID Attribution Message.
+            if(arr[19]==int('B')){
+                addOrder(arr);
+            }   
             break;
         }
         case int('E'):{
             //Order Executed message for Add Order - No MPID (doesn't contain price)
+
             break;
         }
         case int('C'):{
@@ -93,6 +88,7 @@ int main(){
         }
         
     }
+    
     
     clock_t endTime = clock();
     double runtime = double(endTime-startTime)/CLOCKS_PER_SEC;
