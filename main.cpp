@@ -10,6 +10,7 @@ int main(int argc,char *argv[]){
     }
     string filename = argv[1];
     cout<<"Opening : "<<filename<<endl;
+
     /*Using the Clock to monitor the permonace of the program*/
     clock_t startTime = clock();
 
@@ -17,6 +18,7 @@ int main(int argc,char *argv[]){
     // For reference : /Users/abhishek/Downloads/01302019.NASDAQ_ITCH50
     ifstream inputStream(filename,ios::in | ios::binary);
     
+    cout<<"Starting..."<<endl;
     /*Reading the Input Stream*/
     while(inputStream){
 

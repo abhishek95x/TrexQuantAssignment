@@ -37,7 +37,6 @@ PERFORMANCE ANALYSIS:
 
 MacOS Ventura.
 Apple Silicon M2
-Macbook Air 2022. 
 
 On Power : 145 seconds.
 
