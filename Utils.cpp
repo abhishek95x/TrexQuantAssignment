@@ -22,7 +22,6 @@ const string WHITESPACE = " \n\r\t\f\v";
 uint64_t HOUR = 3600000000000;
 uint64_t curr_hour_timestamp = 0;
 
-
 /*=============================================================================================================================*/
 /*ORDER PARSINGS
 ===============================================================================================================================*/
@@ -203,7 +202,7 @@ void writeToFile(unsigned char arr[]){
 
 void writeHourlyVWAP(){
     ofstream outData;
-    string filename = "/Users/abhishek/Downloads/output/Hour_";
+    string filename = "output/Hour_";
     filename += intToStr(currentHour);
     outData.open(filename);
     if(!outData){

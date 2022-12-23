@@ -2,14 +2,20 @@
 
 using namespace std;
 
-int main(){
+int main(int argc,char *argv[]){
 
+    if(argc<2){
+        cerr<<"Error : Too few arguments. Please Enter both input filename and output directory";
+        exit(1);
+    }
+    string filename = argv[1];
+    cout<<"Opening : "<<filename<<endl;
     /*Using the Clock to monitor the permonace of the program*/
     clock_t startTime = clock();
 
-    /*Opening the input stream of the ITCH file
-    TODO: Take folder name as an argument*/
-    ifstream inputStream("/Users/abhishek/Downloads/01302019.NASDAQ_ITCH50",ios::in | ios::binary);
+    /*Opening the input stream of the ITCH file*/
+    // For reference : /Users/abhishek/Downloads/01302019.NASDAQ_ITCH50
+    ifstream inputStream(filename,ios::in | ios::binary);
     
     /*Reading the Input Stream*/
     while(inputStream){
