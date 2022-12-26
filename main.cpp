@@ -5,7 +5,7 @@ using namespace std;
 int main(int argc,char *argv[]){
 
     if(argc<2){
-        cerr<<"Error : Too few arguments. Please Enter both input filename and output directory";
+        cerr<<"Error : Too few arguments. Please Enter both input filename";
         exit(1);
     }
     string filename = argv[1];
